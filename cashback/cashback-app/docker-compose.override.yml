@@ -1,0 +1,9 @@
+services:
+  app:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+
+  postgres:
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
