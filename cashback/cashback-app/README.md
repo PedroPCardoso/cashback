@@ -1,59 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 💰 Sistema de Gestão de Despesas e Cashback
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Um sistema moderno e robusto para gestão de finanças pessoais, projetado para categorizar despesas automaticamente e calcular o saldo de cashback acumulado a cada mês, com base em regras configuráveis por categoria.
 
-## About Laravel
+## 🏗️ Arquitetura e Engenharia
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este projeto foi construído utilizando **Domain-Driven Design (DDD)** em harmonia com o framework **Laravel 12**. A aplicação é estritamente dividida em camadas para garantir baixo acoplamento, alta coesão e facilidade de testes automatizados:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Domain Layer:** Contém as regras de negócio puras (Entidades, Value Objects, Contratos de Repositórios e Serviços de Domínio). Não possui dependências do framework.
+- **Application Layer:** Contém os Casos de Uso (Use Cases) que orquestram as transições de estado e interações entre o domínio e a infraestrutura.
+- **Infrastructure Layer:** Implementações técnicas, como Repositórios baseados no Eloquent ORM (Banco de Dados) e infraestruturas do Laravel.
+- **Presentation Layer:** Controladores RESTful API, Views Blade e recursos Web para a interface do usuário.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Funcionalidades Principais
 
-## Learning Laravel
+- **📊 Dashboard de Resumo Mensal:** Visualize o total gasto e o cashback acumulado por categoria em um mês específico em uma interface moderna e com Dark Theme nativo.
+- **🤖 Categorização Automática:** Defina regras com palavras-chave. As novas transações inseridas (via Web ou API) são automaticamente analisadas e associadas à categoria correta de acordo com a prioridade das regras.
+- **💸 Cálculo de Cashback Inteligente:** Cada categoria possui um limite financeiro mensal e uma taxa fixa de cashback (ex: 5% até R$500). O sistema calcula pro-rata o cashback caso a transação cruze exata e perfeitamente o limite parametrizado.
+- **📝 Gestão Completa de Transações:** Registre novas despesas ou edite/exclua os registros antigos. Qualquer alteração dispara a refatoração automática em tempo real dos limites consumidos nas categorias do mês pertinente, garantindo o saldo sempre exato.
+- **⚙️ Configuração Dinâmica de Categorias:** Ajuste livremente as regras de auto-categorização, crie novas gavetas de gastos com novos percentuais de retorno conforme suas regras particulares.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 💻 Stack Tecnológica
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend:** PHP 8.3 e Laravel 12
+- **Banco de Dados:** PostgreSQL 16
+- **Cache & Sessão:** Redis 7
+- **Frontend / UI:** Views Blade renderizadas no servidor com Design Premium Responsivo
+- **Infraestrutura:** Ambiente totalmente isolado usando Docker & Docker Compose
+- **Qualidade de Código Strict:** PHPStan (Level 8 target), PHPUnit e Laravel Pint (PSR-12 ruleset)
 
-## Laravel Sponsors
+## 🛠️ Instalação e Execução Local
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+O projeto foi totalmente "dockerizado" para que você suba o ambiente em poucos minutos sem configurar o PHP na sua máquina hospedeira.
 
-### Premium Partners
+### Pré-requisitos
+- Docker e Docker Compose instalados.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Passo-a-passo
 
-## Contributing
+1. Clone este repositório e acesse a raiz web (`cashback-app`):
+   ```bash
+   cd cashback-app
+   ```
+2. Copie os parâmetros do ambiente configurados no exemplo:
+   ```bash
+   cp .env.example .env
+   ```
+3. Suba o stack infraestrutural via Docker:
+   ```bash
+   docker compose build
+   docker compose up -d
+   ```
+4. Acesse o bash do seu novo contêiner web para os comandos internos:
+   ```bash
+   docker compose exec -u www-data app bash
+   ```
+5. Por fim, dentro do contêiner instale as dependências e o banco de dados:
+   ```bash
+   composer install
+   php artisan key:generate
+   php artisan migrate:fresh --seed
+   ```
+   
+Feito! O framework e o Web Server subirão limpos. Acesse a aplicação completa via navegador na rota principal pelo link **`http://localhost:8080`**.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🧪 Testes e Extrema Estabilidade (Quality Gates)
 
-## Code of Conduct
+O núcleo da aplicação reflete um sistema transacional que cuida de cálculos financeiros. Para garantir pureza do código, o sistema é amparado por testes ferrenhos.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Para rodar a suíte completa com as dezenas de testes end-to-end integrados e limpos:
+```bash
+docker compose exec -u www-data app php artisan test
+```
 
-## Security Vulnerabilities
+Auditoria estática e caça preventiva de bugs (Zero Errors Allowed no Level 8):
+```bash
+docker compose exec -u www-data app ./vendor/bin/phpstan analyse --memory-limit=1G
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Para aplicar automaticamente as correções de indentação e standard do PHP:
+```bash
+docker compose exec -u www-data app ./vendor/bin/pint
+```
