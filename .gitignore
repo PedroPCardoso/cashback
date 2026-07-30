@@ -1,0 +1,45 @@
+# Generic
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+# PHP
+vendor/
+*.log
+*.cache
+.env
+.env.testing
+
+# Docker
+.data/
+pgdata/
+mysql_data/
+redis_data/
+
+# Laravel
+storage/*.key
+/public/storage
+/public/hot
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production
+composer.lock
+package-lock.json
+yarn-error.log
+auth.json
+.phpunit.result.cache
+
+# Application specific
+cashback/cashback-app/.env
+cashback/cashback-app/vendor/
+cashback/cashback-app/storage/*.key
+cashback/cashback-app/public/storage
+cashback/cashback-app/public/hot
+cashback/cashback-app/node_modules/
+cashback/cashback-app/npm-debug.log
+cashback/cashback-app/yarn-error.log
